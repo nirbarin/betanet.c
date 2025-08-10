@@ -14,8 +14,8 @@ This roadmap outlines the step-by-step implementation plan for the Betanet v1.1 
 - [x] Implement SHA-256 hash functionality (hash.c/h)
 - [x] Implement X25519 ECDH key exchange (ecdh.c/h)
 - [x] Implement HKDF-SHA256 key derivation (kdf.c/h)
-- [ ] Implement Ed25519 signatures (sign.c/h)
-- [ ] Add unit tests for crypto primitives
+- [x] Implement Ed25519 signatures (sign.c/h)
+- [x] Add unit tests for crypto primitives
 - [ ] Create crypto registry for algorithm agility
 
 ### 3. Network Basics
