@@ -6,7 +6,7 @@ This roadmap outlines the step-by-step implementation plan for the Betanet v1.1 
 
 ### 1. Basic Build System
 - [x] Set up CMake configuration
-- [ ] Create Makefile targets for build, test, and clean
+- [x] Create Makefile targets for build, test, and clean
 - [x] Configure dependencies and external libraries
 - [ ] Set up CI/CD pipeline
 

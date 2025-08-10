@@ -3,7 +3,7 @@ add_library(net
     tcp.c
     htx/frame.c
     htx/htx.c
-    htx/noice.c
+    htx/noise.c
     htx/origin_mirror.c
     htx/ticket.c
 )

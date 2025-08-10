@@ -1,5 +1,5 @@
 add_library(scion
-  transtion.c
+  transition.c
   path/path.c
   path/maintenance.c
 )
