@@ -11,6 +11,10 @@ target_link_libraries(test_hash PRIVATE crypto)
 add_executable(test_ecdh crypto/test_ecdh.c)
 target_link_libraries(test_ecdh PRIVATE crypto)
 
+add_executable(test_kdf crypto/test_kdf.c)
+target_link_libraries(test_kdf PRIVATE crypto)
+
 # Add tests to CTest
 add_test(NAME test_hash COMMAND test_hash)
 add_test(NAME test_ecdh COMMAND test_ecdh)
+add_test(NAME test_kdf COMMAND test_kdf)
