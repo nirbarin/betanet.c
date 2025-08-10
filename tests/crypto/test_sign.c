@@ -44,8 +44,7 @@ static bool test_keypair_generation(void) {
     }
     TEST_ASSERT(is_nonzero, "Public key is all zeros");
     
-    // Verify that the public key's highest bit is clear (Ed25519 requirement)
-    TEST_ASSERT((public_key[31] & 0x80) == 0, "Public key highest bit should be clear");
+
     
     printf("  Keypair generation: OK\n");
     return true;

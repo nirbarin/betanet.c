@@ -20,9 +20,31 @@ target_link_libraries(test_sign PRIVATE crypto)
 add_executable(test_registry crypto/test_registry.c)
 target_link_libraries(test_registry PRIVATE crypto)
 
+# Add network test executables
+add_executable(test_tcp net/test_tcp.c)
+target_link_libraries(test_tcp PRIVATE net Threads::Threads)
+
+# Generate certificates for TLS tests
+add_custom_command(
+    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/net/ca.crt"
+           "${CMAKE_CURRENT_SOURCE_DIR}/net/server.crt"
+           "${CMAKE_CURRENT_SOURCE_DIR}/net/client.crt"
+    COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/net/generate_certs.sh"
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/net/generate_certs.sh"
+    COMMENT "Generating TLS certificates for tests"
+    VERBATIM
+)
+add_custom_target(generate_test_certs 
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/net/ca.crt"
+            "${CMAKE_CURRENT_SOURCE_DIR}/net/server.crt"
+            "${CMAKE_CURRENT_SOURCE_DIR}/net/client.crt"
+)
+add_dependencies(test_tcp generate_test_certs)
+
 # Add tests to CTest
 add_test(NAME test_hash COMMAND test_hash)
 add_test(NAME test_ecdh COMMAND test_ecdh)
 add_test(NAME test_kdf COMMAND test_kdf)
 add_test(NAME test_sign COMMAND test_sign)
 add_test(NAME test_registry COMMAND test_registry)
+add_test(NAME test_tcp COMMAND test_tcp)

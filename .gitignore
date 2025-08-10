@@ -1,1 +1,5 @@
 build
+# Test certificates
+tests/net/*.crt
+tests/net/*.key
+tests/net/*.srl

@@ -31,9 +31,8 @@ int bn_crypto_sign_keypair_generate(uint8_t private_key[CRYPTO_SIGN_PRIVATEKEY_S
     memcpy(private_key, seed, crypto_sign_SEEDBYTES);
     memcpy(private_key + crypto_sign_SEEDBYTES, ed25519_pk, crypto_sign_PUBLICKEYBYTES);
     
-    /* Copy the public key and ensure the highest bit is cleared */
+    /* Copy the public key */
     memcpy(public_key, ed25519_pk, crypto_sign_PUBLICKEYBYTES);
-    public_key[31] &= 0x7F;  /* Clear the highest bit (Ed25519 requirement) */
     
     /* Securely erase sensitive data */
     sodium_memzero(seed, sizeof seed);
@@ -51,9 +50,6 @@ int bn_crypto_sign_derive_public_key(const uint8_t private_key[CRYPTO_SIGN_PRIVA
 
     /* In our format, the public key is stored in the second half of the private key */
     memcpy(public_key, private_key + 32, CRYPTO_SIGN_PUBLICKEY_SIZE);
-    
-    /* Ensure the highest bit is cleared (Ed25519 requirement) */
-    public_key[31] &= 0x7F;
     
     return 0;
 }

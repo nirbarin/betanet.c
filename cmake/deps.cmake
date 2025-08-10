@@ -8,3 +8,10 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(sodium)
+
+# Find OpenSSL
+find_package(OpenSSL REQUIRED)
+
+# Add pthread support
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
