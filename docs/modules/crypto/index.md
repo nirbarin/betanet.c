@@ -21,7 +21,7 @@ From *2027-01-01*, the **inner** key agreement (L2 §5.3) **MUST** be hybrid X25
 
 ## Algorithm Agility
 
-Implementations **MUST** expose a registry of cryptographic parameters keyed by OIDs; future substitutions **MUST** be negotiated via governance (L7) without changing wire formats where lengths permit.
+Implementations **MUST** expose a registry of cryptographic parameters keyed by OIDs; future substitutions **MUST** be negotiated via governance (L7) without changing wire formats where lengths permit. See [registry.c/h](registry.md) for implementation details.
 
 ## Files
 
@@ -31,3 +31,4 @@ Implementations **MUST** expose a registry of cryptographic parameters keyed by 
 - [sign.c/h](sign.md) - Ed25519 signature implementation
 - [pq/kyber.c/h](pq.md) - Kyber768 implementation
 - [pq/hybrid.c/h](pq.md) - X25519-Kyber768 hybrid implementation
+- [registry.c/h](registry.md) - Cryptographic algorithm registry

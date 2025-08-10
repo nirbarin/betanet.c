@@ -16,7 +16,7 @@ This roadmap outlines the step-by-step implementation plan for the Betanet v1.1 
 - [x] Implement HKDF-SHA256 key derivation (kdf.c/h)
 - [x] Implement Ed25519 signatures (sign.c/h)
 - [x] Add unit tests for crypto primitives
-- [ ] Create crypto registry for algorithm agility
+- [x] Create crypto registry for algorithm agility
 
 ### 3. Network Basics
 - [ ] Implement TCP transport (tcp.c/h)

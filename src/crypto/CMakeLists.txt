@@ -3,6 +3,7 @@ add_library(crypto
     ecdh.c
     kdf.c
     sign.c
+    registry.c
     pq/kyber.c
     pq/hybrid.c
 )
