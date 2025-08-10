@@ -4,6 +4,9 @@ project(betanet C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+# Enable testing
+enable_testing()
+
 # include deps
 include(cmake/deps.cmake)
 
@@ -19,6 +22,9 @@ add_subdirectory(src/privacy)
 add_subdirectory(src/naming)
 add_subdirectory(src/payment)
 add_subdirectory(src/governance)
+
+# add tests
+add_subdirectory(tests)
 
 # main executable
 add_executable(betanet src/main.c src/config.h)

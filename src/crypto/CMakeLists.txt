@@ -8,3 +8,6 @@ add_library(crypto
 )
 
 target_include_directories(crypto PUBLIC ${PROJECT_SOURCE_DIR}/src)
+
+# Link against libsodium
+target_link_libraries(crypto PRIVATE sodium)
