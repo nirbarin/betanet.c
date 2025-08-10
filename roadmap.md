@@ -5,9 +5,9 @@ This roadmap outlines the step-by-step implementation plan for the Betanet v1.1 
 ## Phase 1: Core Infrastructure
 
 ### 1. Basic Build System
-- [ ] Set up CMake configuration
+- [x] Set up CMake configuration
 - [ ] Create Makefile targets for build, test, and clean
-- [ ] Configure dependencies and external libraries
+- [x] Configure dependencies and external libraries
 - [ ] Set up CI/CD pipeline
 
 ### 2. Cryptography Module
