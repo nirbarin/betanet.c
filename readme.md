@@ -73,3 +73,18 @@ src/
 ### Building
 
 *Build instructions will be added as implementation progresses*
+
+### Development
+
+#### AI Assistants
+
+If you're using AI coding assistants to help with this project, please refer to [agents.md](agents.md) for comprehensive guidelines. This file contains detailed instructions on:
+
+- Coding standards and style requirements
+- Error handling patterns
+- Security best practices for crypto implementations
+- Performance optimization guidelines
+- Module integration approaches
+- Protocol-specific implementation requirements
+
+Following these guidelines ensures consistent, high-quality contributions that align with the project's architecture and security requirements.
