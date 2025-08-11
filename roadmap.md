@@ -19,7 +19,7 @@ This roadmap outlines the step-by-step implementation plan for the Betanet v1.1 
 - [x] Create crypto registry for algorithm agility
 
 ### 3. Network Basics
-- [ ] Implement TCP transport (tcp.c/h)
+- [x] Implement TCP transport (tcp.c/h)
 - [ ] Implement QUIC transport (quic.c/h)
 - [ ] Create network utility functions
 - [ ] Add socket and connection management
