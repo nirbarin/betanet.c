@@ -4,6 +4,9 @@ add_subdirectory(quic)
 add_library(net
     quic.c
     tcp.c
+    net_utils.c
+    tls_utils.c
+    conn_mgr.c
     htx/frame.c
     htx/htx.c
     htx/noise.c
