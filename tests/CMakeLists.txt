@@ -4,6 +4,15 @@ cmake_minimum_required(VERSION 3.16)
 # Enable CTest for running tests
 enable_testing()
 
+# Define test targets
+add_test(NAME test_hash COMMAND test_hash)
+add_test(NAME test_ecdh COMMAND test_ecdh)
+add_test(NAME test_kdf COMMAND test_kdf)
+add_test(NAME test_sign COMMAND test_sign)
+add_test(NAME test_registry COMMAND test_registry)
+add_test(NAME test_tcp COMMAND test_tcp)
+add_test(NAME test_quic COMMAND test_quic)
+
 # Add crypto test executables
 add_executable(test_hash crypto/test_hash.c)
 target_link_libraries(test_hash PRIVATE crypto)
@@ -24,6 +33,9 @@ target_link_libraries(test_registry PRIVATE crypto)
 add_executable(test_tcp net/test_tcp.c)
 target_link_libraries(test_tcp PRIVATE net Threads::Threads)
 
+add_executable(test_quic net/test_quic.c)
+target_link_libraries(test_quic PRIVATE net Threads::Threads)
+
 # Generate certificates for TLS tests
 add_custom_command(
     OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/net/ca.crt"
@@ -40,11 +52,4 @@ add_custom_target(generate_test_certs
             "${CMAKE_CURRENT_SOURCE_DIR}/net/client.crt"
 )
 add_dependencies(test_tcp generate_test_certs)
-
-# Add tests to CTest
-add_test(NAME test_hash COMMAND test_hash)
-add_test(NAME test_ecdh COMMAND test_ecdh)
-add_test(NAME test_kdf COMMAND test_kdf)
-add_test(NAME test_sign COMMAND test_sign)
-add_test(NAME test_registry COMMAND test_registry)
-add_test(NAME test_tcp COMMAND test_tcp)
+add_dependencies(test_quic generate_test_certs)

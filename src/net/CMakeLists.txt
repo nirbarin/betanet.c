@@ -1,3 +1,6 @@
+# Add QUIC subdirectory
+add_subdirectory(quic)
+
 add_library(net
     quic.c
     tcp.c
@@ -9,4 +12,6 @@ add_library(net
 )
 
 target_include_directories(net PUBLIC ${PROJECT_SOURCE_DIR}/src)
-target_link_libraries(net PUBLIC OpenSSL::SSL OpenSSL::Crypto)
+
+# Link against QUIC module and other dependencies
+target_link_libraries(net PUBLIC quic_module OpenSSL::SSL OpenSSL::Crypto)

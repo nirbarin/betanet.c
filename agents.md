@@ -208,15 +208,29 @@ When implementing features, follow this rigorous process:
    - Add comprehensive validation and security checks
    - Separate protocol logic from I/O operations
    - Implement test cases alongside the code
+   - For large modules, use a directory structure with modular components
 
-3. **Code Quality**:
+3. **Modular Implementation**:
+   - For complex features (like QUIC protocol), create a directory structure
+   - Split implementation into logical components with focused responsibilities
+   - Use consistent naming for related files
+   - Create an internal header for implementation details
+   - Implement a clean public API that forwards to the modular components
+   - Consider these component types:
+     - **config**: Configuration and initialization
+     - **conn/connection**: Connection management
+     - **stream**: Data handling and streaming
+     - **internal**: Private utility functions and structures
+     - **protocol-specific**: Additional protocol support (e.g., MASQUE for QUIC)
+
+4. **Code Quality**:
    - Write self-documenting code with clear variable names
    - Keep functions focused and short (< 50 lines recommended)
    - Minimize cyclomatic complexity
    - Ensure complete error case coverage
    - Follow a consistent pattern for similar operations
 
-4. **Integration**:
+5. **Integration**:
    - Define clear module boundaries and interfaces
    - Minimize inter-module dependencies
    - Use opaque pointers for implementation hiding
@@ -291,14 +305,22 @@ When implementing tests, adhere to these guidelines:
    - Test realistic usage scenarios
    - Validate proper resource management
 
-3. **Security Testing**:
-   - Test resistance to malformed inputs
-   - Verify cryptographic implementations against test vectors
-   - Check for memory leaks and use-after-free conditions
-   - Validate boundary conditions
-   - Test concurrency correctness
+3. **Testing Modular Implementations**:
+   - Create separate test files for each component
+   - Test each module independently before integration
+   - Use mocks or stubs for dependencies
+   - Test internal functions through the public API
+   - Validate integration between components
+   - Test error propagation across module boundaries
 
-4. **Performance Testing**:
+4. **Security Testing**:
+    - Test resistance to malformed inputs
+    - Verify cryptographic implementations against test vectors
+    - Check for memory leaks and use-after-free conditions
+    - Validate boundary conditions
+    - Test concurrency correctness
+
+5. **Performance Testing**:
    - Benchmark critical operations
    - Test scalability under load
    - Verify memory usage characteristics
@@ -404,6 +426,7 @@ As an AI assistant for the Betanet.c project, you must adhere to these high stan
    - Implement proper error handling for all failure paths
    - Follow the project coding style precisely
    - Provide comprehensive tests for new code
+   - For large, complex features, use a modular approach with separate files organized in directories
 
 2. **Code Reviews**:
    - Identify security vulnerabilities
