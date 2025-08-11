@@ -21,9 +21,9 @@ This roadmap outlines the step-by-step implementation plan for the Betanet v1.1 
 ### 3. Network Basics
 - [x] Implement TCP transport (tcp.c/h)
 - [x] Implement QUIC transport (quic.c/h)
-- [ ] Create network utility functions
-- [ ] Add socket and connection management
-- [ ] Set up TLS integration
+- [x] Create network utility functions
+- [x] Add socket and connection management
+- [x] Set up TLS integration
 
 ## Phase 2: Cover Transport (HTX)
 
