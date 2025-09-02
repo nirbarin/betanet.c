@@ -323,7 +323,12 @@ static int htx_connection_process_frames(HTXConnection *conn, const uint8_t *dat
         }
     } else {
         /* Direct frame processing for testing */
-        decrypted_data = (uint8_t*)data;
+        /* For unencrypted data, we need to copy to maintain const-correctness */
+        decrypted_data = malloc(len);
+        if (!decrypted_data) {
+            return HTX_ERROR_ALLOCATION_FAILED;
+        }
+        memcpy(decrypted_data, data, len);
         decrypted_len = len;
     }
     
