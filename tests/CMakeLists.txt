@@ -11,10 +11,10 @@ add_test(NAME test_kdf COMMAND test_kdf)
 add_test(NAME test_sign COMMAND test_sign)
 add_test(NAME test_registry COMMAND test_registry)
 add_test(NAME test_tcp COMMAND test_tcp)
-# add_test(NAME test_quic COMMAND test_quic) # Temporarily disabled
+add_test(NAME test_quic COMMAND test_quic)
 add_test(NAME test_net_utils COMMAND test_net_utils)
 add_test(NAME test_tls_utils COMMAND test_tls_utils)
-# add_test(NAME test_conn_mgr COMMAND test_conn_mgr) # Temporarily disabled (depends on QUIC)
+add_test(NAME test_conn_mgr COMMAND test_conn_mgr)
 add_test(NAME test_htx COMMAND test_htx)
 
 # Add crypto test executables
@@ -37,8 +37,8 @@ target_link_libraries(test_registry PRIVATE crypto)
 add_executable(test_tcp net/test_tcp.c)
 target_link_libraries(test_tcp PRIVATE net Threads::Threads)
 
-# add_executable(test_quic net/test_quic.c) # Temporarily disabled
-# target_link_libraries(test_quic PRIVATE net Threads::Threads)
+add_executable(test_quic net/test_quic.c)
+target_link_libraries(test_quic PRIVATE net Threads::Threads)
 
 add_executable(test_net_utils net/test_net_utils.c)
 target_link_libraries(test_net_utils PRIVATE net Threads::Threads)
@@ -52,8 +52,8 @@ target_compile_definitions(test_tls_utils PRIVATE
     CMAKE_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
 )
 
-# add_executable(test_conn_mgr net/test_conn_mgr.c) # Temporarily disabled (depends on QUIC)
-# target_link_libraries(test_conn_mgr PRIVATE net Threads::Threads)
+add_executable(test_conn_mgr net/test_conn_mgr.c)
+target_link_libraries(test_conn_mgr PRIVATE net Threads::Threads)
 
 # Generate certificates for TLS tests
 add_custom_command(
@@ -71,6 +71,6 @@ add_custom_target(generate_test_certs
             "${CMAKE_CURRENT_SOURCE_DIR}/net/client.crt"
 )
 add_dependencies(test_tcp generate_test_certs)
-# add_dependencies(test_quic generate_test_certs) # Temporarily disabled
+add_dependencies(test_quic generate_test_certs)
 add_dependencies(test_tls_utils generate_test_certs)
-# add_dependencies(test_conn_mgr generate_test_certs) # Temporarily disabled
+add_dependencies(test_conn_mgr generate_test_certs)
