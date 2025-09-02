@@ -18,13 +18,13 @@ int htx_origin_mirror_init(const char *origin_domain, HTXOriginMirror **mirror_o
     
     HTXOriginMirror *mirror = calloc(1, sizeof(HTXOriginMirror));
     if (!mirror) {
-        return HTX_ERROR_INVALID_PARAM;
+        return HTX_ERROR_NO_MEMORY;
     }
     
     mirror->origin_domain = strdup(origin_domain);
     if (!mirror->origin_domain) {
         free(mirror);
-        return HTX_ERROR_INVALID_PARAM;
+        return HTX_ERROR_NO_MEMORY;
     }
     
     mirror->calibrated = false;
