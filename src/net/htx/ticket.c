@@ -54,21 +54,47 @@ int htx_ticket_validate(HTXTicketManager *manager, const uint8_t *ticket_data,
     if (!manager || !ticket_data) {
         return HTX_ERROR_INVALID_PARAM;
     }
-    
+
     if (ticket_size != HTX_TICKET_SIZE) {
         return HTX_ERROR_TICKET_INVALID;
     }
-    
-    /* For prototype: basic timestamp validation */
-    if (ticket_size >= sizeof(uint64_t)) {
-        uint64_t ticket_time = *(uint64_t*)ticket_data;
-        time_t now = time(NULL);
-        
-        if (now - ticket_time > manager->lifetime_sec) {
-            return HTX_ERROR_TICKET_INVALID;
-        }
+
+    /* Layout: [8B timestamp_be][HTX_TICKET_NONCE_SIZE nonce][HTX_TICKET_MAC_SIZE mac] */
+    const size_t TS_LEN = 8;
+    const size_t NONCE_OFF = TS_LEN;
+    const size_t MAC_OFF = TS_LEN + HTX_TICKET_NONCE_SIZE;
+
+    /* Decode timestamp (big-endian) without alignment assumptions */
+    uint64_t ticket_time = 0;
+    for (size_t i = 0; i < TS_LEN; ++i) {
+        ticket_time = (ticket_time << 8) | ticket_data[i];
     }
-    
-    /* In a real implementation, this would verify HMAC-based authentication */
+
+    time_t now = time(NULL);
+    if (now == (time_t)-1) {
+        return HTX_ERROR_TICKET_INVALID;
+    }
+    uint64_t now_u = (uint64_t)now;
+    if (now_u < ticket_time) {
+        return HTX_ERROR_TICKET_INVALID;
+    }
+    if ((now_u - ticket_time) > (uint64_t)manager->lifetime_sec) {
+        return HTX_ERROR_TICKET_INVALID;
+    }
+
+    /* MAC = HMAC-SHA256(timestamp||nonce) with manager->secret_key */
+    unsigned char calc_mac[HTX_TICKET_MAC_SIZE];
+    crypto_auth_hmacsha256_state st;
+    crypto_auth_hmacsha256_init(&st, manager->secret_key, sizeof(manager->secret_key));
+    crypto_auth_hmacsha256_update(&st, ticket_data, TS_LEN + HTX_TICKET_NONCE_SIZE);
+    crypto_auth_hmacsha256_final(&st, calc_mac);
+
+    int mac_ok = sodium_memcmp(calc_mac, ticket_data + MAC_OFF, HTX_TICKET_MAC_SIZE) == 0;
+    sodium_memzero(calc_mac, sizeof(calc_mac));
+    if (!mac_ok) {
+        return HTX_ERROR_TICKET_INVALID;
+    }
+
+    /* TODO (follow-up): enforce replay protection for (timestamp, nonce) */
     return 0;
 }
