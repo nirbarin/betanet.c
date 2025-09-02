@@ -45,9 +45,13 @@ int htx_frame_init(HTXFrame *frame, uint8_t type, uint8_t flags,
     
     if (payload_size > 0) {
         frame->payload = malloc(payload_size);
+    if (payload_size > 0) {
+        frame->payload = malloc(payload_size);
         if (!frame->payload) {
-            return HTX_ERROR_INVALID_PARAM;
+            return HTX_ERROR_ALLOCATION_FAILED;
         }
+        /* ... */
+    }
         frame->payload_capacity = payload_size;
     }
     
