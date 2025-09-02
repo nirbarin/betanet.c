@@ -123,10 +123,13 @@ int htx_frame_serialize(const HTXFrame *frame, uint8_t *buffer,
     /* Write frame header */
     write_uint24(buffer, frame->length);
     buffer[3] = frame->type;
-    buffer[4] = frame->flags;
-    
-    /* Write stream ID (preserve reserved bit as 0) */
-    uint32_t stream_id_network = htonl(frame->stream_id & HTX_STREAM_ID_MASK);
+    /* Write frame header */
+    write_uint24(buffer, frame->length);
+    buffer[3] = frame->type;
+    /* Write flags and stream ID (preserve reserved bit as 0) */
+    uint32_t flags_and_stream_id = (((uint32_t)frame->flags) << 24) |
+                                   (frame->stream_id & HTX_STREAM_ID_MASK);
+    uint32_t stream_id_network = htonl(flags_and_stream_id);
     memcpy(buffer + 4, &stream_id_network, 4);
     
     /* Copy payload if present */
