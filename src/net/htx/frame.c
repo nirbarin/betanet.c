@@ -158,10 +158,11 @@ int htx_frame_set_payload(HTXFrame *frame, const uint8_t *data, size_t data_size
     
     /* Reallocate payload buffer if needed */
     if (data_size > frame->payload_capacity) {
-        uint8_t *new_payload = realloc(frame->payload, data_size);
-        if (!new_payload) {
-            return HTX_ERROR_INVALID_PARAM;
-        }
+        if (data_size > frame->payload_capacity) {
+            uint8_t *new_payload = realloc(frame->payload, data_size);
+            if (!new_payload) {
+                return HTX_ERROR_ALLOCATION_FAILED;
+            }
         frame->payload = new_payload;
         frame->payload_capacity = data_size;
     }
