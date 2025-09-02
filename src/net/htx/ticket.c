@@ -44,7 +44,7 @@ int htx_ticket_manager_cleanup(HTXTicketManager *manager) {
         return HTX_ERROR_INVALID_PARAM;
     }
     
-    memset(manager, 0, sizeof(HTXTicketManager));
+    sodium_memzero(manager, sizeof(HTXTicketManager));
     free(manager);
     return 0;
 }
