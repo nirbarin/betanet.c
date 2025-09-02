@@ -121,9 +121,10 @@ int htx_connection_create(const HTXConfig *config, HTXConnection **conn_out) {
     
     conn = calloc(1, sizeof(HTXConnection));
     if (!conn) {
-        result = HTX_ERROR_INVALID_PARAM;
-        goto cleanup;
+        return HTX_ERROR_ALLOCATION_FAILED;
     }
+
+    result = HTX_ERROR_INVALID_PARAM;  // Set default error for cleanup path
     
     /* Copy configuration */
     memcpy(&conn->config, config, sizeof(HTXConfig));
