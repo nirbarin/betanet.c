@@ -136,14 +136,30 @@ int htx_connection_create(const HTXConfig *config, HTXConnection **conn_out) {
     conn->connection_recv_window = config->initial_window_size;
     
     /* Initialize mutexes */
+    /* Initialize mutexes */
+    int mutex1_init = 0, mutex2_init = 0;
     if (pthread_mutex_init(&conn->connection_mutex, NULL) != 0) {
         result = HTX_ERROR_INVALID_PARAM;
         goto cleanup;
     }
-    
+    mutex1_init = 1;
+
     if (pthread_mutex_init(&conn->streams_mutex, NULL) != 0) {
         result = HTX_ERROR_INVALID_PARAM;
         goto cleanup;
+    }
+    mutex2_init = 1;
+
+    /* … other setup code … */
+
+cleanup:
+    if (conn) {
+        if (conn->output_buffer) {
+            free(conn->output_buffer);
+        }
+        if (mutex2_init) pthread_mutex_destroy(&conn->streams_mutex);
+        if (mutex1_init) pthread_mutex_destroy(&conn->connection_mutex);
+        free(conn);
     }
     
     /* Allocate output buffer */
