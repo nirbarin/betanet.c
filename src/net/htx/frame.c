@@ -87,7 +87,9 @@ int htx_frame_parse(const uint8_t *buffer, size_t buffer_size,
     uint32_t length = read_uint24(buffer);
     uint8_t type = buffer[3];
     uint8_t flags = buffer[4];
-    uint32_t stream_id = ntohl(*(uint32_t*)(buffer + 4)) & HTX_STREAM_ID_MASK;
+    uint32_t stream_id_raw;
+    memcpy(&stream_id_raw, buffer + 4, sizeof(uint32_t));
+    uint32_t stream_id = ntohl(stream_id_raw) & HTX_STREAM_ID_MASK;
     
     /* Validate frame parameters */
     if (length > HTX_FRAME_MAX_PAYLOAD_SIZE) {
