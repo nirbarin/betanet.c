@@ -1,8 +1,7 @@
-# Add QUIC subdirectory (temporarily disabled due to dependency issues)
-# add_subdirectory(quic)
+add_subdirectory(quic)
 
 add_library(net
-    # quic.c (temporarily disabled)
+    quic.c
     tcp.c
     net_utils.c
     tls_utils.c
@@ -16,5 +15,6 @@ add_library(net
 
 target_include_directories(net PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
-# Link against dependencies (QUIC module temporarily removed)
+# Link against dependencies
+target_link_libraries(net PUBLIC quic_module OpenSSL::SSL OpenSSL::Crypto)
 target_link_libraries(net PUBLIC OpenSSL::SSL OpenSSL::Crypto crypto pthread)
