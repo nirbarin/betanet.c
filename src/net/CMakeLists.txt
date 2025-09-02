@@ -17,4 +17,4 @@ add_library(net
 target_include_directories(net PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 # Link against dependencies (QUIC module temporarily removed)
-target_link_libraries(net PUBLIC OpenSSL::SSL OpenSSL::Crypto pthread)
+target_link_libraries(net PUBLIC OpenSSL::SSL OpenSSL::Crypto crypto pthread)
