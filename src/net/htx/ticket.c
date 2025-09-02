@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
+#include <sodium.h>
 /**
  * @brief Basic HTX Ticket Manager structure
  */
