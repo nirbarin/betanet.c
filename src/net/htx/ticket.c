@@ -29,7 +29,7 @@ int htx_ticket_manager_init(const uint8_t secret_key[32], uint32_t lifetime_sec,
     
     HTXTicketManager *manager = calloc(1, sizeof(HTXTicketManager));
     if (!manager) {
-        return HTX_ERROR_INVALID_PARAM;
+        return HTX_ERROR_NO_MEMORY;
     }
     
     memcpy(manager->secret_key, secret_key, 32);
