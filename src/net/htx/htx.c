@@ -370,7 +370,23 @@ static int htx_connection_process_frames(HTXConnection *conn, const uint8_t *dat
     }
     
     /* Clean up decrypted data if allocated */
-    if (decrypted_data != data && decrypted_data) {
+    /* track whether noise decryption actually allocated a new buffer */
+    bool decrypted_allocated = false;
+
+    if (conn->noise_state && htx_noise_is_ready(conn->noise_state)) {
+        result = htx_noise_decrypt(conn->noise_state, data, len,
+                                  &decrypted_data, &decrypted_len);
+        if (result < 0) {
+            return HTX_ERROR_NOISE_FAILURE;
+        }
+        decrypted_allocated = true;
+    } else {
+        decrypted_data = (uint8_t *)data;
+        decrypted_len  = len;
+    }
+
+    /* only zero & free if we really allocated a separate buffer */
+    if (decrypted_allocated && decrypted_data) {
         memset(decrypted_data, 0, decrypted_len);
         free(decrypted_data);
     }
