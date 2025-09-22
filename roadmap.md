@@ -29,7 +29,7 @@ This roadmap outlines the step-by-step implementation plan for the Betanet v1.1 
 
 ### 4. HTX Core
 - [ ] Implement HTX protocol core (htx/htx.c/h)
-- [ ] Implement inner frame format (htx/frame.c/h)
+- [x] Implement inner frame format (htx/frame.c/h)
 - [ ] Add stream multiplexing
 - [ ] Implement connection management
 
