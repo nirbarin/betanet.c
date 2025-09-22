@@ -24,58 +24,27 @@ FetchContent_Declare(
     GIT_TAG v1.14.0
 )
 
-FetchContent_GetProperties(ngtcp2)
-if(NOT ngtcp2_POPULATED)
-  FetchContent_Populate(ngtcp2)
-  
-  # Create a library target for ngtcp2
-  add_library(ngtcp2 STATIC IMPORTED)
-  
-  # Options for building ngtcp2
-  set(ENABLE_APPS OFF CACHE BOOL "")
-  set(ENABLE_EXAMPLES OFF CACHE BOOL "")
-  set(ENABLE_STATIC_LIB ON CACHE BOOL "")
-  set(ENABLE_SHARED_LIB OFF CACHE BOOL "")
-  
-  # Build ngtcp2 library
-  execute_process(
-    COMMAND mkdir -p build
-    WORKING_DIRECTORY ${ngtcp2_SOURCE_DIR}
-  )
-  execute_process(
-    COMMAND cmake -DCMAKE_BUILD_TYPE=Release 
-                  -DENABLE_APPS=${ENABLE_APPS}
-                  -DENABLE_EXAMPLES=${ENABLE_EXAMPLES}
-                  -DENABLE_STATIC_LIB=${ENABLE_STATIC_LIB}
-                  -DENABLE_SHARED_LIB=${ENABLE_SHARED_LIB}
-                  -DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR}
-                  ..
-    WORKING_DIRECTORY ${ngtcp2_SOURCE_DIR}/build
-  )
-  execute_process(
-    COMMAND cmake --build .
-    WORKING_DIRECTORY ${ngtcp2_SOURCE_DIR}/build
-  )
-  
-  # Set the include directories
-  target_include_directories(ngtcp2 INTERFACE 
-    ${ngtcp2_SOURCE_DIR}/lib/includes
-  )
-  
-  # Set the library location
-  set_target_properties(ngtcp2 PROPERTIES
-    IMPORTED_LOCATION "${ngtcp2_SOURCE_DIR}/build/lib/libngtcp2.a"
-  )
-  
-  # Create a target for ngtcp2_crypto_ossl
-  add_library(ngtcp2_crypto_ossl STATIC IMPORTED)
-  set_target_properties(ngtcp2_crypto_ossl PROPERTIES
-    IMPORTED_LOCATION "${ngtcp2_SOURCE_DIR}/build/crypto/ossl/libngtcp2_crypto_ossl.a"
-  )
-  target_include_directories(ngtcp2_crypto_ossl INTERFACE 
-    ${ngtcp2_SOURCE_DIR}/crypto/includes
-  )
-  
-  # Link ngtcp2_crypto_ossl with OpenSSL
-  target_link_libraries(ngtcp2_crypto_ossl INTERFACE OpenSSL::SSL OpenSSL::Crypto)
+  FetchContent_GetProperties(ngtcp2)
+  if(NOT ngtcp2_POPULATED)
+    # Temporarily disable building tests in ngtcp2 so it doesn't register
+    # a test executable named 'main' that isn't built by default.
+    set(_ORIG_BUILD_TESTING "${BUILD_TESTING}")
+    set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+    set(ENABLE_APPS OFF CACHE BOOL "" FORCE)
+    set(ENABLE_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(ENABLE_STATIC_LIB ON CACHE BOOL "" FORCE)
+    set(ENABLE_SHARED_LIB OFF CACHE BOOL "" FORCE)
+    set(OPENSSL_ROOT_DIR ${OPENSSL_ROOT_DIR} CACHE PATH "" FORCE)
+    FetchContent_MakeAvailable(ngtcp2)
+
+    # Restore BUILD_TESTING to previous value for this project
+    if(DEFINED _ORIG_BUILD_TESTING)
+      set(BUILD_TESTING ${_ORIG_BUILD_TESTING} CACHE BOOL "" FORCE)
+    else()
+      unset(BUILD_TESTING CACHE)
+    endif()
+
+  # Alias for compatibility
+  add_library(ngtcp2 ALIAS ngtcp2_static)
+  add_library(ngtcp2_crypto_ossl ALIAS ngtcp2_crypto_ossl_static)
 endif()
